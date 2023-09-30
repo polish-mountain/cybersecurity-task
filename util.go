@@ -3,6 +3,7 @@ package main
 import (
 	"strconv"
 	"strings"
+	"unicode/utf8"
 )
 
 // func echoE(input string) string {
@@ -73,22 +74,46 @@ func echoE(input string) string {
 						i += 2
 					}
 				default:
-
 					if '0' <= input[i+1] && input[i+1] <= '9' {
-						start := i + 1
-						end := start
-						for end < len(input) && '0' <= input[end] && input[end] <= '9' && (end-start) < 4 {
-							end++
+						bytes := make([]byte, 0)
+						length := -1
+						for current := 0; length < 0 || current < length; current++ {
+							start := i + 1
+							end := start + 3
+							octal := input[start:end]
+							val, err := strconv.ParseInt(octal, 10, 0)
+							if err == nil {
+								bytes = append(bytes, byte(val))
+							} else {
+								panic("dupa")
+							}
+							if length == -1 {
+								const (
+									ONE_BYTE_PREFIX    = 0b00000000
+									ONE_BYTE_MASK      = 0b10000000
+									TWO_BYTES_PREFIX   = 0b11000000
+									TWO_BYTES_MASK     = 0b11100000
+									THREE_BYTES_PREFIX = 0b11100000
+									THREE_BYTES_MASK   = 0b11110000
+									FOUR_BYTES_PREFIX  = 0b11110000
+									FOUR_BYTES_MASK    = 0b11111000
+								)
+								if val&ONE_BYTE_MASK == ONE_BYTE_PREFIX {
+									length = 1
+								} else if val&TWO_BYTES_MASK == TWO_BYTES_PREFIX {
+									length = 2
+								} else if val&THREE_BYTES_MASK == THREE_BYTES_PREFIX {
+									length = 3
+								} else if val&FOUR_BYTES_MASK == FOUR_BYTES_PREFIX {
+									length = 4
+								} else {
+									panic("dupa")
+								}
+							}
+							i = end
 						}
-						octal := input[start:end]
-						val, err := strconv.ParseInt(octal, 10, 8)
-						if err == nil {
-							output.WriteByte(byte(val))
-						} else {
-							// // If there's an error (shouldn't happen), just write the original sequence.
-							// output.WriteString("\\" + octal)
-						}
-						i = end
+						rune_, _ := utf8.DecodeRune(bytes)
+						output.WriteRune(rune_)
 					} else { // Escapes of random characters
 						output.WriteByte(input[i+1])
 						i += 2
