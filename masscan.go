@@ -9,7 +9,7 @@ import (
 )
 
 func massscanScanner() {
-	return
+
 	for {
 		proc := exec.Command("../masscan/bin/masscan", "-p", "80", "10.250.192.186/19", "--output-format", "json", "--output-file", "-")
 		out, err := proc.StdoutPipe()
@@ -61,7 +61,7 @@ func massscanScanner() {
 		}()
 		proc.Wait()
 		// read from stdout
-
+		return
 	}
 
 }

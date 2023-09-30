@@ -1,12 +1,18 @@
 package main
 
 import (
+	"flag"
 	"log"
+	"strings"
 	"sync"
 
 	"github.com/gofiber/contrib/websocket"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 )
+
+// flags
+var listenAddr = flag.String("listen", ":3000", "address to listen on")
 
 var isScanningMutex sync.Mutex
 var isScanning bool = false
@@ -34,6 +40,26 @@ type HostInfo struct {
 	Host         string            `json:"host"`
 	OpenServices []OpenServiceInfo `json:"open_services"`
 	DeviceName   string            `json:"device_name"`
+	DeviceType   string            `json:"device_type"`
+}
+
+func (h *HostInfo) DetectData() {
+	if strings.Contains(h.DeviceName, "MacBook") ||
+		strings.Contains(h.DeviceName, "LAPTOP-") ||
+		strings.Contains(h.DeviceName, "Pavilion") ||
+		strings.Contains(h.DeviceName, "-LAPTOP") ||
+		strings.Contains(h.DeviceName, "_LAPTOP") {
+		h.DeviceType = "laptop"
+	} else if strings.Contains(h.DeviceName, "DESKTOP-") || strings.Contains(h.DeviceName, "Mac mini") || strings.Contains(h.DeviceName, "iMac") {
+		h.DeviceType = "desktop"
+	} else if strings.Contains(h.DeviceName, "iPhone") || strings.Contains(h.DeviceName, "Redmi") || strings.Contains(h.DeviceName, "POCO") {
+		h.DeviceType = "phone"
+	} else if strings.Contains(h.DeviceName, "iPad") {
+		h.DeviceType = "tablet"
+	} else if strings.Contains(h.DeviceName, "MBP") {
+		h.DeviceType = "laptop"
+	}
+
 }
 
 var hosts = make([]*HostInfo, 0)
@@ -62,6 +88,7 @@ func updateHost(host *HostInfo) {
 	defer hostListenersMutex.RUnlock()
 	hostsMutex.Lock()
 	defer hostsMutex.Unlock()
+	host.DetectData()
 	for _, v := range hostListeners {
 		select {
 		case v <- host:
@@ -95,12 +122,18 @@ func scanningRoutine() {
 	isScanning = true
 	isScanningMutex.Unlock()
 	go massscanScanner()
-	go avahiScanner()
+	go avahiScanner("avahi-browse", "-apr")
+	go avahiScanner("cat", "laptop_avahi.txt")
 }
 
 func main() {
+	flag.Parse()
 	app := fiber.New()
 
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "*",
+		AllowHeaders: "Origin, Content-Type, Accept",
+	}))
 	app.Use("/api/ws", func(c *fiber.Ctx) error {
 		// IsWebSocketUpgrade returns true if the client
 		// requested upgrade to the WebSocket protocol.
@@ -137,6 +170,7 @@ func main() {
 
 	app.Static("/", "./public")
 	go scanningRoutine()
-	log.Fatal(app.Listen(":3000"))
+
+	log.Fatal(app.Listen(*listenAddr))
 
 }

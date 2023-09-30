@@ -7,9 +7,9 @@ import (
 	"strings"
 )
 
-func avahiScanner() {
+func avahiScanner(name string, args ...string) {
 	for {
-		proc := exec.Command("avahi-browse", "-apr")
+		proc := exec.Command(name, args...)
 		out, err := proc.StdoutPipe()
 		if err != nil {
 			log.Printf("error creating stdout pipe: %v", err)
@@ -27,10 +27,12 @@ func avahiScanner() {
 				if len(segments) < 8 {
 					continue
 				}
-				log.Printf("inp: %v, out: %v", segments[3], echoE(segments[3]))
 				deviceName := echoE(segments[3])
 				ipAddr := segments[7]
 
+				if len(deviceName) < 3 {
+					continue
+				}
 				// log.Printf("result: %#v", segments)
 				host := getOrCreateHost(ipAddr)
 				host.DeviceName = deviceName
@@ -40,6 +42,6 @@ func avahiScanner() {
 		}()
 		proc.Wait()
 		// read from stdout
-
+		return
 	}
 }
