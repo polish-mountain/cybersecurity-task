@@ -9,10 +9,17 @@ import (
 	"github.com/gofiber/contrib/websocket"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
 )
+
+var db *gorm.DB
 
 // flags
 var listenAddr = flag.String("listen", ":3000", "address to listen on")
+var rootURL = flag.String("root-url", "http://localhost:3000", "root url")
+var dbPath = flag.String("db", "test.db", "path to database")
 
 var isScanningMutex sync.Mutex
 var isScanning bool = false
@@ -41,6 +48,8 @@ type HostInfo struct {
 	OpenServices []OpenServiceInfo `json:"open_services"`
 	DeviceName   string            `json:"device_name"`
 	DeviceType   string            `json:"device_type"`
+	Screenshots  []string          `json:"screenshots"`
+	MacAddress   string            `json:"mac_address"`
 }
 
 func (h *HostInfo) DetectData() {
@@ -95,6 +104,14 @@ func updateHost(host *HostInfo) {
 		default:
 		}
 	}
+	for _, serv := range host.OpenServices {
+		if serv.Port == 80 {
+			screenshotJobQueue <- ScreenshotJob{
+				URL:      "http://" + host.IP,
+				HostInfo: host,
+			}
+		}
+	}
 }
 
 func getOrCreateHost(ip string) *HostInfo {
@@ -108,6 +125,7 @@ func getOrCreateHost(ip string) *HostInfo {
 	host := &HostInfo{
 		IP:           ip,
 		OpenServices: make([]OpenServiceInfo, 0),
+		Screenshots:  make([]string, 0),
 	}
 	hosts = append(hosts, host)
 	return host
@@ -124,10 +142,20 @@ func scanningRoutine() {
 	go massscanScanner()
 	go avahiScanner("avahi-browse", "-apr")
 	go avahiScanner("cat", "laptop_avahi.txt")
+	go arpScanner("arp", "-an")
 }
 
 func main() {
 	flag.Parse()
+
+	var err error
+	db, err = gorm.Open(sqlite.Open(
+		*dbPath,
+	), &gorm.Config{})
+	if err != nil {
+		log.Fatalf("error opening database: %v", err)
+	}
+	db.AutoMigrate(&CachedScreenshot{})
 	app := fiber.New()
 
 	app.Use(cors.New(cors.Config{
@@ -135,8 +163,6 @@ func main() {
 		AllowHeaders: "Origin, Content-Type, Accept",
 	}))
 	app.Use("/api/ws", func(c *fiber.Ctx) error {
-		// IsWebSocketUpgrade returns true if the client
-		// requested upgrade to the WebSocket protocol.
 		if websocket.IsWebSocketUpgrade(c) {
 			c.Locals("allowed", true)
 			return c.Next()
@@ -167,8 +193,18 @@ func main() {
 		}
 
 	}))
+	app.Get("/api/screenshot/:uuid", func(c *fiber.Ctx) error {
+		var cs CachedScreenshot
+		err := db.Where("uuid = ?", c.Params("uuid")).First(&cs).Error
+		if err != nil {
+			return c.SendStatus(404)
+		}
+		return c.Send(cs.Data)
+	})
 
 	app.Static("/", "./public")
+
+	startScreenshotWorkers()
 	go scanningRoutine()
 
 	log.Fatal(app.Listen(*listenAddr))
