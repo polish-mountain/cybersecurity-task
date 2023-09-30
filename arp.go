@@ -32,7 +32,7 @@ func arpScanner(name string, args ...string) {
 				macAddr := segments[3]
 				ipAddr = strings.ReplaceAll(ipAddr, "(", "")
 				ipAddr = strings.ReplaceAll(ipAddr, ")", "")
-				log.Printf("%v %v", ipAddr, macAddr)
+
 				// log.Printf("result: %#v", segments)
 				host := getOrCreateHost(ipAddr)
 				host.MacAddress = macAddr
