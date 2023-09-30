@@ -5,6 +5,7 @@ import (
 	"log"
 	"os/exec"
 	"strings"
+	"time"
 )
 
 func arpScanner(name string, args ...string) {
@@ -41,6 +42,7 @@ func arpScanner(name string, args ...string) {
 		}()
 		proc.Wait()
 		// read from stdout
+		time.Sleep(5 * time.Second)
 
 	}
 }
