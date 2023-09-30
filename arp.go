@@ -37,7 +37,7 @@ func arpScanner(name string, args ...string) {
 				host := getOrCreateHost(ipAddr)
 				ouiResult, ok := lookupMac(macAddr)
 				if !ok {
-					log.Printf("error querying oui database: %v", err)
+					// log.Printf("error querying oui database: %v", err)
 
 				} else {
 					host.MacManufacturer = ouiResult.Abbreviation
