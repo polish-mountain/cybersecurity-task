@@ -9,12 +9,14 @@ import (
 	"github.com/gofiber/contrib/websocket"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/tomruk/oui"
 
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
 var db *gorm.DB
+var ouiDb *oui.DB
 
 // flags
 var listenAddr = flag.String("listen", ":3000", "address to listen on")
@@ -43,13 +45,14 @@ type OpenServiceInfo struct {
 }
 
 type HostInfo struct {
-	IP           string            `json:"ip"`
-	Host         string            `json:"host"`
-	OpenServices []OpenServiceInfo `json:"open_services"`
-	DeviceName   string            `json:"device_name"`
-	DeviceType   string            `json:"device_type"`
-	Screenshots  []string          `json:"screenshots"`
-	MacAddress   string            `json:"mac_address"`
+	IP              string            `json:"ip"`
+	Host            string            `json:"host"`
+	OpenServices    []OpenServiceInfo `json:"open_services"`
+	DeviceName      string            `json:"device_name"`
+	DeviceType      string            `json:"device_type"`
+	Screenshots     []string          `json:"screenshots"`
+	MacAddress      string            `json:"mac_address"`
+	MacManufacturer string            `json:"mac_manufacturer"`
 }
 
 func (h *HostInfo) DetectData() {
@@ -156,6 +159,9 @@ func main() {
 		log.Fatalf("error opening database: %v", err)
 	}
 	db.AutoMigrate(&CachedScreenshot{})
+	if err := loadDatabase("oui.txt"); err != nil {
+		log.Fatalf("error loading oui database: %v", err)
+	}
 	app := fiber.New()
 
 	app.Use(cors.New(cors.Config{
