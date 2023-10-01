@@ -44,6 +44,9 @@ func loadDatabase(filename string) error {
 }
 
 func lookupMac(mac string) (CompanyInfo, bool) {
+	if len(mac) < 8 {
+		return CompanyInfo{}, false
+	}
 	info, exists := macDatabase[strings.ToUpper(mac[:8])]
 	return info, exists
 }

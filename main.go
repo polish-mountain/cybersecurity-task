@@ -96,11 +96,15 @@ func addHostListener(ch chan *HostInfo) func() {
 }
 
 func updateHost(host *HostInfo) {
-	hostListenersMutex.RLock()
-	defer hostListenersMutex.RUnlock()
-	hostsMutex.Lock()
-	defer hostsMutex.Unlock()
-	host.DetectData()
+	func() {
+
+		hostListenersMutex.RLock()
+		defer hostListenersMutex.RUnlock()
+
+		hostsMutex.Lock()
+		defer hostsMutex.Unlock()
+		host.DetectData()
+	}()
 	for _, v := range hostListeners {
 		select {
 		case v <- host:
@@ -144,8 +148,8 @@ func scanningRoutine() {
 	isScanningMutex.Unlock()
 	go massscanScanner()
 	go avahiScanner("avahi-browse", "-apr")
-	go avahiScanner("cat", "laptop_avahi.txt")
-	go arpScanner("arp", "-an")
+	go avahiScanner("cat", "phone_avahi.txt")
+	// go arpScanner("arp", "-an")
 }
 
 func main() {
@@ -184,6 +188,8 @@ func main() {
 
 	app.Get("/api/ws", websocket.New(func(c *websocket.Conn) {
 
+		go scanningRoutine()
+
 		// websocket.Conn bindings https://pkg.go.dev/github.com/fasthttp/websocket?tab=doc#pkg-index
 		readChan := make(chan *HostInfo)
 		unsubscribe := addHostListener(readChan)
@@ -211,7 +217,6 @@ func main() {
 	app.Static("/", "./public")
 
 	startScreenshotWorkers()
-	go scanningRoutine()
 
 	log.Fatal(app.Listen(*listenAddr))
 

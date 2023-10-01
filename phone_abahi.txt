@@ -1,0 +1,57 @@
++;wlp3s0;IPv6;iPad\032\0402\041;_rdlink._tcp;local
++;wlp3s0;IPv6;iPad\032\040Maria\041;_rdlink._tcp;local
++;wlp3s0;IPv6;iPad\032Intruz;_rdlink._tcp;local
++;wlp3s0;IPv6;iPad\032\040Rafa\197\130\041;_rdlink._tcp;local
++;wlp3s0;IPv6;iPad\032\0403\041;_rdlink._tcp;local
++;wlp3s0;IPv6;Bartosz\226\128\153s\032iPad;_rdlink._tcp;local
++;wlp3s0;IPv6;iPad\032\040Torja\041;_rdlink._tcp;local
++;wlp3s0;IPv4;iPad\032\0402\041;_rdlink._tcp;local
++;wlp3s0;IPv4;iPad\032\040Maria\041;_rdlink._tcp;local
++;wlp3s0;IPv4;Michal\039s\032iPad\032Pro;_rdlink._tcp;local
++;wlp3s0;IPv4;iPad\032Intruz;_rdlink._tcp;local
++;wlp3s0;IPv4;iPad\032\040Rafa\197\130\041;_rdlink._tcp;local
++;wlp3s0;IPv4;Bartosz\226\128\153s\032iPad;_rdlink._tcp;local
++;wlp3s0;IPv4;iPad\032\0403\041;_rdlink._tcp;local
++;wlp3s0;IPv4;iPad\032\040Torja\041;_rdlink._tcp;local
++;wlp3s0;IPv6;Bartosz\226\128\153s\032iPad;_companion-link._tcp;local
++;wlp3s0;IPv6;iPad;_companion-link._tcp;local
++;wlp3s0;IPv6;iPad\032\040Rafa\197\130\041;_companion-link._tcp;local
++;wlp3s0;IPv6;iPad\032\040Torja\041;_companion-link._tcp;local
++;wlp3s0;IPv6;Wiktoria\226\128\153s\032iPad;_companion-link._tcp;local
++;wlp3s0;IPv6;iPad\032\0403\041;_companion-link._tcp;local
++;wlp3s0;IPv4;iPad\032\0403\041;_companion-link._tcp;local
++;wlp3s0;IPv4;iPad\032\040Rafa\197\130\041;_companion-link._tcp;local
++;wlp3s0;IPv4;iPad\032\040Torja\041;_companion-link._tcp;local
++;wlp3s0;IPv4;Wiktoria\226\128\153s\032iPad;_companion-link._tcp;local
++;wlp3s0;IPv4;Bartosz\226\128\153s\032iPad;_companion-link._tcp;local
++;wlp3s0;IPv4;iPad;_companion-link._tcp;local
++;wlp3s0;IPv6;Michal\039s\032iPad\032Pro;_rdlink._tcp;local
+=;wlp3s0;IPv4;83A2BE3B-F8A2-47B0-8671-14CC46ACCE9A;_remotepairing._tcp;local;Michals-iPad-Pro.local;10.250.161.36;49152;
+=;wlp3s0;IPv6;iPad\032\0402\041;_rdlink._tcp;local;iPad-2.local;10.250.165.108;49155;"rpAD=8148494153ff" "rpVr=430.3" 
+=;wlp3s0;IPv6;iPad\032\040Maria\041;_rdlink._tcp;local;iPad-Maria.local;10.250.163.242;63140;"rpAD=fab3e90c240e" "rpVr=440.
+=;wlp3s0;IPv6;iPad\032Intruz;_rdlink._tcp;local;iPad-Intruz.local;10.250.162.114;49155;"rpAD=2337db823c1e" "rpVr=440.10" 
+=;wlp3s0;IPv6;iPad\032\040Rafa\197\130\041;_rdlink._tcp;local;iPad-Rafa.local;10.250.166.219;49153;"rpAD=2f429f6baf40" 
+=;wlp3s0;IPv6;iPad\032\0403\041;_rdlink._tcp;local;iPad-3.local;10.250.166.50;49154;"rpAD=e5547dee7286" "rpVr=440.10" 
+=;wlp3s0;IPv6;Bartosz\226\128\153s\032iPad;_rdlink._tcp;local;Bartoszs-iPad.local;10.250.163.1;49156;"rpAD=1c718c9d00f5" 
+=;wlp3s0;IPv6;iPad\032\040Torja\041;_rdlink._tcp;local;iPad-Torja.local;10.250.164.255;49156;"rpAD=b20c7b480b5a" "rpVr=440.
+=;wlp3s0;IPv4;iPad\032\0402\041;_rdlink._tcp;local;iPad-2.local;10.250.165.108;49155;"rpAD=8148494153ff" "rpVr=430.3" 
+=;wlp3s0;IPv4;iPad\032\040Maria\041;_rdlink._tcp;local;iPad-Maria.local;10.250.163.242;63140;"rpAD=fab3e90c240e" "rpVr=440.
+=;wlp3s0;IPv4;Michal\039s\032iPad\032Pro;_rdlink._tcp;local;Michals-iPad-Pro.local;10.250.161.36;49154;"rpAD=308426530786" 
+=;wlp3s0;IPv4;iPad\032Intruz;_rdlink._tcp;local;iPad-Intruz.local;10.250.162.114;49155;"rpAD=2337db823c1e" "rpVr=440.10" 
+=;wlp3s0;IPv4;iPad\032\040Rafa\197\130\041;_rdlink._tcp;local;iPad-Rafa.local;10.250.166.219;49153;"rpAD=2f429f6baf40" 
+=;wlp3s0;IPv4;Bartosz\226\128\153s\032iPad;_rdlink._tcp;local;Bartoszs-iPad.local;10.250.163.1;49156;"rpAD=1c718c9d00f5" 
+=;wlp3s0;IPv4;iPad\032\0403\041;_rdlink._tcp;local;iPad-3.local;10.250.166.50;49154;"rpAD=e5547dee7286" "rpVr=440.10" 
+=;wlp3s0;IPv4;iPad\032\040Torja\041;_rdlink._tcp;local;iPad-Torja.local;10.250.164.255;49156;"rpAD=b20c7b480b5a" "rpVr=440.
+=;wlp3s0;IPv6;Bartosz\226\128\153s\032iPad;_companion-link._tcp;local;Bartoszs-iPad.local;10.250.163.1;61973;
+=;wlp3s0;IPv6;iPad;_companion-link._tcp;local;iPad.local;10.250.164.229;49697;"rpBA=97:C3:D8:A2:BD:4F" "rpHI=2f5dcdf57092" 
+=;wlp3s0;IPv6;iPad\032\040Rafa\197\130\041;_companion-link._tcp;local;iPad-Rafa.local;10.250.166.219;49424;
+=;wlp3s0;IPv6;iPad\032\040Torja\041;_companion-link._tcp;local;iPad-Torja.local;10.250.164.255;50432;"rpVr=440.10" 
+=;wlp3s0;IPv6;Wiktoria\226\128\153s\032iPad;_companion-link._tcp;local;Wiktorias-iPad.local;10.250.162.80;49168;
+=;wlp3s0;IPv6;iPad\032\0403\041;_companion-link._tcp;local;iPad-3.local;10.250.166.50;49270;"rpVr=440.10" "rpMac=0" 
+=;wlp3s0;IPv4;iPad\032\0403\041;_companion-link._tcp;local;iPad-3.local;10.250.166.50;49270;"rpVr=440.10" "rpMac=0" 
+=;wlp3s0;IPv4;iPad\032\040Rafa\197\130\041;_companion-link._tcp;local;iPad-Rafa.local;10.250.166.219;49424;
+=;wlp3s0;IPv4;iPad\032\040Torja\041;_companion-link._tcp;local;iPad-Torja.local;10.250.164.255;50432;"rpVr=440.10" 
+=;wlp3s0;IPv4;Wiktoria\226\128\153s\032iPad;_companion-link._tcp;local;Wiktorias-iPad.local;10.250.162.80;49168;
+=;wlp3s0;IPv4;Bartosz\226\128\153s\032iPad;_companion-link._tcp;local;Bartoszs-iPad.local;10.250.163.1;61973;
+=;wlp3s0;IPv4;iPad;_companion-link._tcp;local;iPad.local;10.250.164.229;49697;"rpBA=97:C3:D8:A2:BD:4F" "rpHI=2f5dcdf57092" 
+=;wlp3s0;IPv6;Michal\039s\032iPad\032Pro;_rdlink._tcp;local;Michals-iPad-Pro.local;10.250.161.36;49154;"rpAD=308426530786" 
