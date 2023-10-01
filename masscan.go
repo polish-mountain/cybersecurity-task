@@ -11,7 +11,8 @@ import (
 func massscanScanner() {
 
 	for {
-		proc := exec.Command("../masscan/bin/masscan", "-p", "80", "10.250.192.186/19", "--output-format", "json", "--output-file", "-")
+		// proc := exec.Command("../masscan/bin/masscan", "-p", "80", "10.250.192.186/19", "--output-format", "json", "--output-file", "-")
+		proc := exec.Command("cat", "masscan_cache.txt")
 		out, err := proc.StdoutPipe()
 		if err != nil {
 			log.Printf("error creating stdout pipe: %v", err)

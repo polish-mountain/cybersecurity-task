@@ -33,14 +33,18 @@ func runScreenshotWorker() {
 
 }
 
-func addHostScreenshot(host *HostInfo, uuid string) {
+func addHostScreenshot(host *HostInfo, uuid string, title string) {
 	resultUrl := *rootURL + "/api/screenshot/" + uuid
 	for _, v := range host.Screenshots {
 		if v == resultUrl {
 			return
 		}
 	}
+	log.Printf("adding screenshot to array %v", host.IP)
 	host.Screenshots = append(host.Screenshots, resultUrl)
+	if len(host.OpenServices) > 0 {
+		host.OpenServices[0].Title = title
+	}
 	updateHost(host)
 
 }
@@ -55,7 +59,7 @@ func processJob(job ScreenshotJob) (err error) {
 	var cs CachedScreenshot
 	err = db.Where("url = ?", job.URL).First(&cs).Error
 	if err == nil {
-		addHostScreenshot(job.HostInfo, cs.UUID)
+		addHostScreenshot(job.HostInfo, cs.UUID, cs.Title)
 		log.Printf("ADDING CACHED SCREENSHOT FOR %v", job.URL)
 		return nil
 	}
@@ -64,19 +68,21 @@ func processJob(job ScreenshotJob) (err error) {
 	defer page.MustClose()
 	page.MustWaitStable()
 	page.MustScreenshot()
+	title := page.MustElement("title").MustEval(`() => this.innerText`).String()
 	screenshotData, err := page.Screenshot(false, nil)
 	if err != nil {
 		return err
 	}
 	newCs := &CachedScreenshot{
-		URL:  job.URL,
-		UUID: uuid.New().String(),
-		Data: screenshotData,
+		URL:   job.URL,
+		UUID:  uuid.New().String(),
+		Data:  screenshotData,
+		Title: title,
 	}
 	err = db.Save(newCs).Error
 	if err != nil {
 		return err
 	}
-	addHostScreenshot(job.HostInfo, newCs.UUID)
+	addHostScreenshot(job.HostInfo, newCs.UUID, title)
 	return nil
 }

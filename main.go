@@ -113,6 +113,7 @@ func updateHost(host *HostInfo) {
 	}
 	for _, serv := range host.OpenServices {
 		if serv.Port == 80 {
+			log.Printf("adding screenshot job")
 			screenshotJobQueue <- ScreenshotJob{
 				URL:      "http://" + host.IP,
 				HostInfo: host,
