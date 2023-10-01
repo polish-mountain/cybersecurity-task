@@ -149,7 +149,7 @@ func scanningRoutine() {
 	isScanningMutex.Unlock()
 	go massscanScanner()
 	go avahiScanner("avahi-browse", "-apr")
-	go avahiScanner("cat", "phone_avahi.txt")
+	// go avahiScanner("cat", "phone_avahi.txt")
 	// go arpScanner("arp", "-an")
 }
 
