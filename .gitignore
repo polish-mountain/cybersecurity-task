@@ -2,3 +2,4 @@ paused.conf
 laptop_avahi.txt
 *.db
 *.txt
+!oui.txt
